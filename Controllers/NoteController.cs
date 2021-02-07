@@ -24,14 +24,24 @@ namespace NoteApp.Controllers
         public IActionResult CreateNote()
         {
             User checkUser = HttpContext.Session.Get<User>("UsuarioLogueado");
-            
-            if(checkUser == null)
+
+            if(checkUser != null)
             {
-                return RedirectToAction("Login", "Home");
+                User userToBring = db.Users.Include(u => u.Notes).FirstOrDefault(u => u.Email.Equals(checkUser.Email));
+                
+                if(userToBring.Notes.Count() > 0)
+                {
+                    return View(userToBring.Notes.ToList());
+                }
+                else
+                {
+                    ViewBag.EmptyNotes = true;
+                    return View();
+                }
             }
             else
             {
-                return View();
+                return RedirectToAction("Login", "Home");
             }
         }
 

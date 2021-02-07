@@ -21,30 +21,6 @@ namespace NoteApp.Controllers
             this.db = context;
         }
 
-        public IActionResult Index()
-        {
-            User checkUser = HttpContext.Session.Get<User>("UsuarioLogueado");
-
-            if(checkUser != null)
-            {
-                User userToBring = db.Users.Include(u => u.Notes).FirstOrDefault(u => u.Email.Equals(checkUser.Email));
-                
-                if(userToBring.Notes.Count() > 0)
-                {
-                    return View(userToBring.Notes.ToList());
-                }
-                else
-                {
-                    ViewBag.EmptyNotes = true;
-                    return View();
-                }
-            }
-            else
-            {
-                return View("Login");
-            }
-        }
-
         public IActionResult Login()
         {
             return View();
@@ -64,7 +40,7 @@ namespace NoteApp.Controllers
                     User userToBringNotes = db.Users.Include(u => u.Notes).FirstOrDefault(u => u.Email.Equals(checkUser.Email));
                     if(userToBringNotes.Notes.Count() > 0)
                     {
-                        return View("Index", userToBringNotes.Notes.ToList());
+                        return RedirectToAction("CreateNote", "Note", userToBringNotes.Notes.ToList());
                     }
                     else
                     {
@@ -75,7 +51,7 @@ namespace NoteApp.Controllers
                 else
                 {
                     ViewBag.errorCredenciales = true;
-                    return View("Login");
+                    return RedirectToAction("CreateNote", "Note");
                 }
             }
             else
@@ -83,7 +59,7 @@ namespace NoteApp.Controllers
                 User userToBringNotes = db.Users.Include(u => u.Notes).FirstOrDefault(u => u.Email.Equals(checkUser.Email));
                 if(userToBringNotes.Notes.Count() > 0)
                 {
-                    return View("Index", userToBringNotes.Notes.ToList());
+                    return RedirectToAction("CreateNote", "Note", userToBringNotes.Notes.ToList());
                 }
                 else
                 {

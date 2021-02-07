@@ -1,5 +1,32 @@
+@model List<Note>
+@{
+    bool EmptyNotes = (ViewBag.EmptyNotes != null);
+}
+
 <form action="@Url.Action("ToCreateNote", "Note")" method="POST" class="form1">
     <input type="text" name="title">
     <input type="text" name="body">
     <input type="submit" value="Crear Nota">
 </form>
+
+@if(EmptyNotes)
+{
+    <p style="font-size: 4rem;">Aún no tenés ninguna nota creada.</p>
+}
+else
+{
+    @foreach (Note note in Model)
+    {
+        if(note.Status == 0)
+        {
+            <div class="note-body body-@note.NoteID">
+                <p>@note.Title</p>
+                <p>@note.Body</p>
+                <i class="fas fa-trash delete-note"></i>
+                <input type="text" value="@note.NoteID" class="NoteID">
+                <i class="fas fa-archive archieve-note"></i>
+                <input type="text" value="@note.NoteID" class="NoteID">
+            </div> 
+        }   
+    }
+}
