@@ -1,0 +1,15 @@
+@{
+    bool existeUsuario = (ViewBag.existeUsuario != null);
+}
+
+<form class="contact-form" action="@Url.Action("ToRegister", "Home")" method="POST">
+    @if(existeUsuario)
+    {
+        <p style="color: red;">Ya existe un usuario con esas credenciales.</p>
+    }
+    <input type="email" name="email">
+    <input type="password" name="password">
+    <input type="text" name="first_name">
+    <input type="text" name="last_name">
+    <input type="submit" value="Registrarse">
+</form>

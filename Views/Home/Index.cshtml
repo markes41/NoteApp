@@ -1,0 +1,21 @@
+﻿@model List<Note>
+@{
+    bool EmptyNotes = (ViewBag.EmptyNotes != null);
+}
+
+@if(EmptyNotes)
+{
+    <p style="font-size: 4rem;">Aún no tenés ninguna nota creada.</p>
+}
+else
+{
+    @foreach (Note note in Model)
+    {
+        <div class="note-body">
+            <input type="hidden" value="@note.NoteID" id="NoteID">
+            <p>@note.Title</p>
+            <p>@note.Body</p>
+        </div>    
+    }
+}
+

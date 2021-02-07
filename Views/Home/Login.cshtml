@@ -1,0 +1,14 @@
+@{
+    bool errorCredenciales = (ViewBag.errorCredenciales != null);
+}
+
+<form action="@Url.Action("ToLogin", "Home")" method="POST" class="form1">
+    @if(errorCredenciales)
+    {
+        <p style="color: red;">Contraseña incorrecta</p>
+    }
+    <input type="text" name="email">
+    <input type="password" name="password">     
+
+    <input type="submit" value="Login">
+</form>
