@@ -97,7 +97,7 @@ namespace NoteApp.Controllers
             }
         }
         
-        public IActionResult DeleteNotes()
+        public IActionResult DeleteNote()
         {
             User checkUser = HttpContext.Session.Get<User>("UsuarioLogueado");
             
@@ -139,9 +139,56 @@ namespace NoteApp.Controllers
             if(noteToRestore != null)
             {
                 noteToRestore.Status = 0;
-
                 db.Notes.Update(noteToRestore);
                 db.SaveChanges();
+            }
+        }
+
+        public void ToArchiveNote(int ID)
+        {
+            Note noteToArchive = db.Notes.FirstOrDefault(n => n.NoteID == ID);
+
+            if(noteToArchive != null)
+            {
+                noteToArchive.Status = 2;
+                db.Notes.Update(noteToArchive);
+                db.SaveChanges();
+            }
+        }
+
+        public void UnarchiveNote(int ID)
+        {
+            Note noteToUnarchive = db.Notes.FirstOrDefault(n => n.NoteID == ID);
+
+            if(noteToUnarchive != null)
+            {
+                noteToUnarchive.Status = 0;
+                db.Notes.Update(noteToUnarchive);
+                db.SaveChanges();
+            }
+        }
+
+        public IActionResult ArchiveNote()
+        {
+            User checkUser = HttpContext.Session.Get<User>("UsuarioLogueado");
+            
+            if(checkUser != null)
+            {
+                User userToBringNotes = db.Users.Include(u => u.Notes).FirstOrDefault(u => u.Email.Equals(checkUser.Email));
+
+                if(userToBringNotes.Notes.Count() > 0)
+                {
+                    return View(userToBringNotes.Notes.ToList());
+                }
+                else
+                {
+                    ViewBag.EmptyNotes = true;
+                    return View();
+                }
+            }
+            else
+            {
+                return RedirectToAction("Login", "Home");
             }
         }
     }

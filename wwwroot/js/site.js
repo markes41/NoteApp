@@ -37,5 +37,18 @@
             }
         });
     });
+
+    $('.archieve-note').on('click', function(){
+        var NoteID = $(this).next('.NoteID').val();
+        $('.body-'+ NoteID).hide();
+
+        $.ajax({
+            type: 'POST',
+            url: '/Note/ToArchiveNote',
+            data: {
+                ID: NoteID
+            }
+        });
+    });
 });
 
