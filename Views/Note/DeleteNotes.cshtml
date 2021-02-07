@@ -1,25 +1,26 @@
-﻿@model List<Note>
+@model List<Note>
 @{
     bool EmptyNotes = (ViewBag.EmptyNotes != null);
 }
 
 @if(EmptyNotes)
 {
-    <p style="font-size: 4rem;">Aún no tenés ninguna nota creada.</p>
+    <p style="font-size: 4rem;">No hay ninguna nota en la papelera.</p>
 }
 else
 {
     @foreach (Note note in Model)
     {
-        if(note.Status == 0)
+        if(note.Status == 1)
         {
             <div class="note-body body-@note.NoteID">
                 <p>@note.Title</p>
                 <p>@note.Body</p>
-                <i class="fas fa-trash delete-note"></i>
+                <i class="fas fa-times definitely-delete"></i>
+                <input type="text" value="@note.NoteID" class="NoteID">
+                <i class="fas fa-redo-alt restore-note"></i>
                 <input type="text" value="@note.NoteID" class="NoteID">
             </div> 
         }   
     }
 }
-

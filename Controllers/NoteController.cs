@@ -84,6 +84,65 @@ namespace NoteApp.Controllers
                 }
             }
         }
+
+        public void DeleteTweet(int ID)
+        {
+            Note noteToSearch = db.Notes.FirstOrDefault(n => n.NoteID == ID);
+
+            if(noteToSearch != null)
+            {
+                noteToSearch.Status = 1;
+                db.Notes.Update(noteToSearch);
+                db.SaveChanges();
+            }
+        }
         
+        public IActionResult DeleteNotes()
+        {
+            User checkUser = HttpContext.Session.Get<User>("UsuarioLogueado");
+            
+            if(checkUser != null)
+            {
+                User userToBringNotes = db.Users.Include(u => u.Notes).FirstOrDefault(u => u.Email.Equals(checkUser.Email));
+
+                if(userToBringNotes.Notes.Count() > 0)
+                {
+                    return View(userToBringNotes.Notes.ToList());
+                }
+                else
+                {
+                    ViewBag.EmptyNotes = true;
+                    return View();
+                }
+            }
+            else
+            {
+                return RedirectToAction("Login", "Home");
+            }
+        }
+
+        public void DefinitelyDelete(int ID)
+        {
+            Note noteToDelete = db.Notes.FirstOrDefault(n => n.NoteID == ID);
+
+            if(noteToDelete != null)
+            {
+                db.Notes.Remove(noteToDelete);
+                db.SaveChanges();
+            }
+        }
+
+        public void RestoreNote(int ID)
+        {
+            Note noteToRestore = db.Notes.FirstOrDefault(n => n.NoteID == ID);
+
+            if(noteToRestore != null)
+            {
+                noteToRestore.Status = 0;
+
+                db.Notes.Update(noteToRestore);
+                db.SaveChanges();
+            }
+        }
     }
 }

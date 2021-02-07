@@ -1,7 +1,41 @@
 ﻿$( document ).ready(function() {
-    $('.note-body').on('click', function(){
-        var id = $(this).next('#NoteID').val();
-        alert(id)
+    $('.delete-note').on('click', function(){
+        var NoteID = $(this).next('.NoteID').val();
+        $('.body-'+ NoteID).hide();
+
+        $.ajax({
+            type: 'POST',
+            url: '/Note/DeleteTweet',
+            data: {
+                ID: NoteID
+            }
+        });
     })
+
+    $('.definitely-delete').on('click', function(){
+        var NoteID = $(this).next('.NoteID').val();
+        $('.body-'+ NoteID).hide();
+
+        $.ajax({
+            type: 'POST',
+            url: '/Note/DefinitelyDelete',
+            data: {
+                ID: NoteID
+            }
+        });
+    });
+
+    $('.restore-note').on('click', function(){
+        var NoteID = $(this).next('.NoteID').val();
+        $('.body-'+ NoteID).hide();
+
+        $.ajax({
+            type: 'POST',
+            url: '/Note/RestoreNote',
+            data: {
+                ID: NoteID
+            }
+        });
+    });
 });
 
