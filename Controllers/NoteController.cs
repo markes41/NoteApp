@@ -95,7 +95,7 @@ namespace NoteApp.Controllers
             }
         }
 
-        public void DeleteTweet(int ID)
+        public void ToDeleteNote(int ID)
         {
             Note noteToSearch = db.Notes.FirstOrDefault(n => n.NoteID == ID);
 
@@ -199,6 +199,23 @@ namespace NoteApp.Controllers
             else
             {
                 return RedirectToAction("Login", "Home");
+            }
+        }
+
+        public Note noteToReturn(int ID)
+        {
+            Note noteToReturn = db.Notes.FirstOrDefault(n => n.NoteID == ID);
+
+            if(noteToReturn != null)
+            {
+                noteToReturn.Status = 3;
+                db.Notes.Update(noteToReturn);
+                db.SaveChanges();
+                return noteToReturn;
+            }
+            else
+            {
+                return null;
             }
         }
     }

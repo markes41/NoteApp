@@ -3,22 +3,34 @@
     bool EmptyNotes = (ViewBag.EmptyNotes != null);
 }
 
+@section Styles{
+    <link rel="stylesheet" href="~/css/archivenote.css" />
+}
+
 @if(EmptyNotes)
 {
     <p style="font-size: 4rem;">No hay ninguna nota en la papelera.</p>
 }
 else
 {
-    @foreach (Note note in Model)
-    {
-        if(note.Status == 2)
-        {
-            <div class="note-body body-@note.NoteID">
-                <p>@note.Title</p>
-                <p>@note.Body</p>
-                <i class="fas fa-redo-alt restore-note"></i>
-                <input type="text" value="@note.NoteID" class="NoteID">
-            </div> 
-        }   
-    }
+    <div class="all-notes-container">
+        <div class="row">
+            @foreach (Note note in Model)
+            {
+                if(note.Status == 2)
+                {
+                    <div class="note-container col-md-3 body-@note.NoteID">
+                        <p class="note-title color-white">@note.Title</p>
+                        <p class="note-body color-white">@note.Body</p>
+                        <div class="icons-note">
+                            <i class="far fa-trash-alt color-white pointer delete-note"></i>
+                            <input type="hidden" value="@note.NoteID" class="NoteID">
+                            <i class="fas fa-redo-alt color-white restore-note pointer"></i>
+                            <input type="hidden" value="@note.NoteID" class="NoteID">
+                        </div>
+                    </div>
+                }   
+            }
+        </div>
+    </div>
 }

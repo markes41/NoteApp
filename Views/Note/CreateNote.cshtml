@@ -3,30 +3,48 @@
     bool EmptyNotes = (ViewBag.EmptyNotes != null);
 }
 
-<form action="@Url.Action("ToCreateNote", "Note")" method="POST" class="form1">
-    <input type="text" name="title">
-    <input type="text" name="body">
-    <input type="submit" value="Crear Nota">
-</form>
+@section Styles{
+    <link rel="stylesheet" href="~/css/createnote.css" />
+}
 
-@if(EmptyNotes)
-{
-    <p style="font-size: 4rem;">Aún no tenés ninguna nota creada.</p>
-}
-else
-{
-    @foreach (Note note in Model)
-    {
-        if(note.Status == 0)
-        {
-            <div class="note-body body-@note.NoteID">
-                <p>@note.Title</p>
-                <p>@note.Body</p>
-                <i class="fas fa-trash delete-note"></i>
-                <input type="text" value="@note.NoteID" class="NoteID">
-                <i class="fas fa-archive archieve-note"></i>
-                <input type="text" value="@note.NoteID" class="NoteID">
-            </div> 
-        }   
-    }
-}
+
+        
+            <div class="new-note-container">
+                <input type="text" name="title" class="new-note-title b-color" placeholder="Título">
+                <textarea name="body" contenteditable="" class="new-note-body b-color" placeholder="Crear una nota..." cols="30" rows="10"></textarea>
+                <div class="new-note-icons">
+                    <i class="fas fa-plus color-white pointer"></i>
+                    <i class="fas fa-times color-white pointer"></i>
+                </div>
+            </div>
+
+            @if(EmptyNotes)
+            {
+                <p style="font-size: 4rem;">Aún no tenés ninguna nota creada.</p>
+            }
+            else
+            {
+                
+                <div class="all-notes-container">
+                    <div class="row">
+                        @foreach (Note note in Model)
+                        {
+                            if(note.Status == 0)
+                            { 
+                                <div class="note-container col-md-3 body-@note.NoteID">
+                                    <p class="note-title color-white">@note.Title</p>
+                                    <p class="note-body color-white">@note.Body</p>
+                                    <div class="icons-note">
+                                        <i class="far fa-trash-alt color-white pointer delete-note"></i>
+                                        <input type="hidden" value="@note.NoteID" class="NoteID">
+                                        <i class="fas fa-archive color-white pointer archieve-note"></i>
+                                        <input type="hidden" value="@note.NoteID" class="NoteID">
+                                        <i class="fas fa-pen color-white pointer"></i>
+                                        <input type="hidden" value="@note.NoteID" class="NoteID">
+                                    </div>
+                                </div>
+                            }   
+                        }
+                    </div>
+                </div>
+            }
